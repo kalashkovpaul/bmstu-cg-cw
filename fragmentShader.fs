@@ -120,8 +120,8 @@ float distance(vec3 p) {
   // float tmp = intersect(cube, cube2);
 
   // return difference(sdfUnion(cylinder, cube), difference(sphere, sphere2));
-  // return sdfUnion(intersect(sdfUnion(cube, sphere), cylinder), cone);
-  return torus;
+  return sdfUnion(intersect(sdfUnion(cube, sphere), cylinder), torus);
+  // return torus;
 }
 
 float sceneDist(vec3 p) {
