@@ -10,16 +10,17 @@ export class Cube {
             params.width,
             params.height,
             params.depth);
-            if (this.cube == null) {
-                this.cube = new THREE.Mesh(this.geom, this.material);
-                this.cube.rotation.order = "ZYX";
+            if (this.object == null) {
+                this.object = new THREE.Mesh(this.geom, this.material);
+                this.object.rotation.order = "ZYX";
             }
-            return this.cube;
+            return this.object;
     }
-    configure(config) {
-        this.cube.position.set(config.pos.PositionX, config.pos.PositionY, config.pos.PositionZ);
-        this.cube.rotation.set(config.rotation.RotationX, config.rotation.RotationY, config.rotation.RotationZ);
-        this.cube.scale.set(config.scale, config.scale, config.scale);
+    configure(globConfig) {
+        var config = globConfig.cube;
+        this.object.position.set(config.pos.PositionX, config.pos.PositionY, config.pos.PositionZ);
+        this.object.rotation.set(config.rotation.RotationX, config.rotation.RotationY, config.rotation.RotationZ);
+        this.object.scale.set(config.scale, config.scale, config.scale);
         return;
     }
 }
@@ -36,15 +37,17 @@ export class Sphere {
             params.heightSegements);
 
 
-            if (this.sphere == null) {
-                this.sphere = new THREE.Mesh(this.geom, this.material);
-                this.sphere.rotation.order = "ZYX";
+            if (this.object == null) {
+                this.object = new THREE.Mesh(this.geom, this.material);
+                this.object.rotation.order = "ZYX";
             }
-            return this.sphere;
+            return this.object;
     }
-    configure(config) {
-        this.sphere.position.set(config.pos.PositionX, config.pos.PositionY, config.pos.PositionZ);
-        this.sphere.scale.set(config.scale, config.scale, config.scale);
+    configure(globConfig) {
+        var config = globConfig.sphere;
+        this.object.position.set(config.pos.PositionX, config.pos.PositionY, config.pos.PositionZ);
+        this.object.scale.set(config.scale, config.scale, config.scale);
+        this.object.rotation.set(config.rotation.RotationX, config.rotation.RotationY, config.rotation.RotationZ);
         return;
 
     }
@@ -63,44 +66,18 @@ export class Cylinder {
             params.heightSegments, params.openEnded);
 
 
-        if (this.cylinder == null) {
-            this.cylinder = new THREE.Mesh(this.geom, this.material);
-            this.cylinder.rotation.order = "ZYX";
+        if (this.object == null) {
+            this.object = new THREE.Mesh(this.geom, this.material);
+            this.object.rotation.order = "ZYX";
         }
 
-        return this.cylinder;
+        return this.object;
     }
-    configure(config) {
-        this.cylinder.position.set(config.pos.PositionX, config.pos.PositionY, config.pos.PositionZ);
-        this.cylinder.rotation.set(config.rotation.RotationX, config.rotation.RotationY, config.rotation.RotationZ);
-        this.cylinder.scale.set(config.scale, config.scale, config.scale);
-        return;
-    }
-}
-
-export class Cone {
-    constructor(material) {
-        this.material = material;
-    }
-
-    get(params) {
-        this.geom =  new THREE.ConeGeometry(
-            params.radius, params.height, params.radialSegments,
-            params.heightSegements, params.openEnd
-        );
-
-
-        if (this.cone == null) {
-            this.cone = new THREE.Mesh(this.geom, this.material);
-            this.cone.rotation.order = "ZYX";
-        }
-
-        return this.cone;
-    }
-    configure(config) {
-        this.cone.position.set(config.pos.PositionX, config.pos.PositionY, config.pos.PositionZ);
-        this.cone.rotation.set(config.rotation.RotationX, config.rotation.RotationY, config.rotation.RotationZ);
-        this.cone.scale.set(config.scale, config.scale, config.scale);
+    configure(globConfig) {
+        var config = globConfig.cylinder;
+        this.object.position.set(config.pos.PositionX, config.pos.PositionY, config.pos.PositionZ);
+        this.object.rotation.set(config.rotation.RotationX, config.rotation.RotationY, config.rotation.RotationZ);
+        this.object.scale.set(config.scale, config.scale, config.scale);
         return;
     }
 }
@@ -111,23 +88,25 @@ export class Torus {
     }
 
     get(params) {
-        this.geom =  new THREE.ConeGeometry(
+        this.geom =  new THREE.TorusGeometry(
             params.radius, params.tube,
             params.radialSegments, params.tubularSegments,
         );
 
 
-        if (this.torus == null) {
-            this.torus = new THREE.Mesh(this.geom, this.material);
-            this.torus.rotation.order = "ZYX";
+        if (this.object == null) {
+            this.object = new THREE.Mesh(this.geom, this.material);
+            this.object.rotation.order = "ZYX";
         }
 
-        return this.torus;
+        return this.object;
     }
-    configure(config) {
-        this.torus.position.set(config.pos.PositionX, config.pos.PositionY, config.pos.PositionZ);
-        this.torus.rotation.set(config.rotation.RotationX, config.rotation.RotationY, config.rotation.RotationZ);
-        this.torus.scale.set(config.scale, config.scale, config.scale);
+
+    configure(globConfig) {
+        var config = globConfig.torus;
+        this.object.position.set(config.pos.PositionX, config.pos.PositionY, config.pos.PositionZ);
+        this.object.rotation.set(config.rotation.RotationX, config.rotation.RotationY, config.rotation.RotationZ);
+        this.object.scale.set(config.scale, config.scale, config.scale);
         return;
     }
 }

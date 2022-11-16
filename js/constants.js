@@ -35,4 +35,22 @@ export var obj_params= {
         radialSegments: 16,
         tubularSegments: 100,
     },
-}
+};
+
+export const maxDatas = 12;
+export const maxTypes = 4;
+export const maxOperations = 3;
+
+export const typesValues = {
+    cube: 1,
+    cylinder: 2,
+    sphere: 3,
+    torus: 4
+};
+
+export const operationsValues = {
+    intersect: 1,
+    union: 2,
+    diff: 3,
+    diffFrom: 4
+};

@@ -12,21 +12,28 @@ uniform bool colored;
 uniform bool internalEdge;
 uniform bool outline;
 
-uniform vec3 spherePosition;
-uniform vec3 sphereRotation;
-uniform float sphereScale;
-uniform vec3 cubePosition;
-uniform vec3 cubeRotation;
-uniform float cubeScale;
-uniform vec3 cylinderPosition;
-uniform vec3 cylinderRotation;
-uniform float cylinderScale;
-uniform vec3 conePosition;
-uniform vec3 coneRotation;
-uniform float coneScale;
-uniform vec3 torusPosition;
-uniform vec3 torusRotation;
-uniform float torusScale;
+// uniform vec3 spherePosition;
+// uniform vec3 sphereRotation;
+// uniform float sphereScale;
+// uniform vec3 cubePosition;
+// uniform vec3 cubeRotation;
+// uniform float cubeScale;
+// uniform vec3 cylinderPosition;
+// uniform vec3 cylinderRotation;
+// uniform float cylinderScale;
+// uniform vec3 conePosition;
+// uniform vec3 coneRotation;
+// uniform float coneScale;
+// uniform vec3 torusPosition;
+// uniform vec3 torusRotation;
+// uniform float torusScale;
+
+const int maxData = 12;
+uniform vec3 data[maxData];
+const int maxTypes = 4;
+uniform int types[maxTypes];
+const int maxOperation = 3;
+uniform int operations[maxOperation];
 
 uniform vec3 va[3];
 
@@ -102,25 +109,62 @@ float torusDist(vec3 p, vec2 t) {
 
 // Тут можно экспериментировать с разными композициями
 float distance(vec3 p) {
-  float cube = boxDist(rotate(translate(p, cubePosition), cubeRotation), vec3(cubeScale * 2., cubeScale * 2., cubeScale * 2.));
+  float result = 0.0;
+  float current = 0.0;
+  for (int i = 0; i < maxTypes; i++) {
+    vec3 position = data[i*3];
+    vec3 rotation = data[i*3 + 1];
+    float scale = data[i*3 + 2].x;
+
+    if (types[i] == 1) { // box
+      current = boxDist(rotate(translate(p, position), rotation), vec3(scale * 2., scale * 2., scale * 2.));
+    } else if (types[i] == 2) { // cylinder
+      current = cylinderDist(rotate(translate(p, position), rotation), scale * 0.5, scale * 4.0);
+    } else if (types[i] == 3) { //sphere
+      current = sphereDist(translate(p, position), scale * 1.);
+    } else if (types[i] == 4) { // torus
+      current = torusDist(rotate(translate(p, position), rotation), vec2(scale * 1.0, scale * 0.25));
+    } else {
+      current = result;
+    }
+    if (i > 0 && i <= maxOperation + 1) {
+      if (operations[i - 1] == 1) { // intersect
+        result = intersect(result, current);
+      } else if (operations[i - 1] == 2) { // union
+        result = sdfUnion(result, current);
+      } else if (operations[i - 1] == 3) { // diff
+        result = difference(result, current);
+      } else if (operations[i - 1] == 4) { // diff from
+        result = difference(current, result);
+      } else {
+        result = current;
+      }
+    } else {
+      result = current;
+    }
+  }
+  return result;
+
+  // float cube = boxDist(rotate(translate(p, cubePosition), cubeRotation), vec3(cubeScale * 2., cubeScale * 2., cubeScale * 2.));
+  // return cube;
   // float cube2 = boxDist(rotate(translate(p, cubePosition+ vec3(1, 1, 1)), cubeRotation), vec3(cubeScale * 2., cubeScale * 2., cubeScale * 2.));
   // float cube3 = boxDist(rotate(translate(p, cubePosition+ vec3(2, 2, 2)), cubeRotation), vec3(cubeScale * 2., cubeScale * 2., cubeScale * 2.));
   // float cube4 = boxDist(rotate(translate(p, cubePosition+ vec3(3, 3, 3)), cubeRotation), vec3(cubeScale * 2., cubeScale * 2., cubeScale * 2.));
 
-  float cylinder = cylinderDist(rotate(translate(p, cylinderPosition), cylinderRotation), cylinderScale * 0.5, cylinderScale * 4.0);
+  // float cylinder = cylinderDist(rotate(translate(p, cylinderPosition), cylinderRotation), cylinderScale * 0.5, cylinderScale * 4.0);
   // float sphere = sphereDist(translate(p, spherePosition), sphereScale * 1. * va[0][0]);
-  float sphere = sphereDist(translate(p, spherePosition), sphereScale * 1.);
+  // float sphere = sphereDist(translate(p, spherePosition), sphereScale * 1.);
   // float sphere2 = sphereDist(translate(p, spherePosition + vec3(1, 1, 1)), sphereScale * 1.);
 
   // float cone = cylinderDist(rotate(translate(p, cylinderPosition), cylinderRotation), cylinderScale * 0.5, cylinderScale * 4.0);
-  float cone = coneDist(rotate(translate(p, conePosition), coneRotation), vec2(coneScale * 1.0, coneScale * 0.25)); // ????
+  // float cone = coneDist(rotate(translate(p, conePosition), coneRotation), vec2(coneScale * 1.0, coneScale * 0.25)); // ????
 
-  float torus = torusDist(rotate(translate(p, torusPosition), torusRotation), vec2(1.0 * torusScale, 0.25 * torusScale));
+  // float torus = torusDist(rotate(translate(p, torusPosition), torusRotation), vec2(1.0 * torusScale, 0.25 * torusScale));
 
   // float tmp = intersect(cube, cube2);
 
   // return difference(sdfUnion(cylinder, cube), difference(sphere, sphere2));
-  return sdfUnion(intersect(sdfUnion(cube, sphere), cylinder), torus);
+  // return sdfUnion(intersect(sdfUnion(cube, sphere), cylinder), torus);
   // return torus;
 }
 
@@ -248,7 +292,7 @@ vec3 getRayColor(vec3 rayOrigin, vec3 rayDirection, out vec3 rayPosition, out ve
     return vec3(0.0);
   }
 
-  if (outline && isOutline(rayPosition, rayDirection)) {
+  if (isOutline(rayPosition, rayDirection)) {
     return vec3(0.0);
   }
 
@@ -285,7 +329,7 @@ void main(void) {
   float alpha = 1.0;
 
   // маршируем
-  for (int i = 0; i < 3; i++) {
+  for (int i = 0; i < 1; i++) {
     color += alpha * getRayColor(rayOrigin, rayDirection, nextRayPos, normal, hit);
 
     if (!hit) {

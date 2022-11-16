@@ -1,7 +1,9 @@
 import {initGui} from '/js/gui.js'
 import {config, getRaymarchingMaterial, updateRaymarchingMaterial} from '/js/config.js'
-import {Cube, Sphere, Cylinder, Cone, Torus} from '/js/objects.js'
+import {Cube, Sphere, Cylinder, Torus} from '/js/objects.js'
 import {obj_params} from '/js/constants.js'
+import { objects, operations, types } from '../index.js';
+import { operationsValues, typesValues } from './constants.js';
 
 
 
@@ -10,9 +12,9 @@ let raymarchingMaterial, raymarchingScreen;
 let raymarchingScene;
 let camera;
 
-var stats = new Stats();
-stats.showPanel(0); // 0: fps, 1: ms, 2: mb, 3+: custom
-document.body.appendChild( stats.dom );
+// var stats = new Stats();
+// stats.showPanel(0); // 0: fps, 1: ms, 2: mb, 3+: custom
+// document.body.appendChild( stats.dom );
 
 export function initRenderer(fshader, vshader) {
   renderer = new THREE.WebGLRenderer({preserveDrawingBuffer: true});
@@ -40,19 +42,28 @@ function initObjects() {
   var material = new THREE.MeshBasicMaterial({color: color, wireframe:true, transparent:true, opacity:0.2});
 
   let cube = new Cube(material);
-  let sphere = new Sphere(material);
-  let cylinder = new Cylinder(material);
-  let cone = new Cone(material);
-  let torus = new Torus(material);
-
+  types[0] = new Number(typesValues.cube);
   wireframeScene.add(cube.get(obj_params.cube));
-  wireframeScene.add(sphere.get(obj_params.sphere));
+  objects.push(cube);
+
+  let cylinder = new Cylinder(material);
+  types[1] = new Number(typesValues.cylinder);
   wireframeScene.add(cylinder.get(obj_params.cylinder));
-  wireframeScene.add(cone.get(obj_params.cone));
+  objects.push(cylinder);
+
+  let sphere = new Sphere(material);
+  types[2] = new Number(typesValues.sphere);
+  wireframeScene.add(sphere.get(obj_params.sphere));
+  objects.push(sphere);
+
+  let torus = new Torus(material);
+  types[3] = new Number(typesValues.torus);
   wireframeScene.add(torus.get(obj_params.torus));
+  objects.push(torus);
 
-
-  return [cube, cylinder, sphere, cone, torus];
+  operations[0] = new Number(operationsValues.union);
+  operations[1] = new Number(operationsValues.union);
+  operations[2] = new Number(operationsValues.union);
 }
 
 function initRaymarching(fshader, vshader) {
@@ -65,26 +76,25 @@ function initRaymarching(fshader, vshader) {
 
   raymarchingScene = new THREE.Scene();
   raymarchingScene.add(raymarchingScreen);
+  // raymarchingMaterial = updateRaymarchingMaterial(raymarchingMaterial, config, objects);
 }
 
-export function render(cube, cylinder, sphere, cone, torus) {
-  stats.begin();
-  requestAnimationFrame( () => {render(cube, cylinder, sphere, cone, torus)} );
+export function render() {
+  // stats.begin();
+  requestAnimationFrame( () => {render(objects)} );
 
   controls.update();
 
-  cube.configure(config.cube);
-  cylinder.configure(config.cylinder);
-  sphere.configure(config.sphere);
-  cone.configure(config.cone);
-  torus.configure(config.torus);
+  objects.forEach(element => {
+    element.configure(config);
+  });
 
-  raymarchingMaterial = updateRaymarchingMaterial(raymarchingMaterial, config, cube, sphere, cylinder, cone, torus);
+  raymarchingMaterial = updateRaymarchingMaterial(raymarchingMaterial, config, objects);
 
   renderer.clear();
   renderer.render(raymarchingScene, camera);
   if (config.wireframe) {
     renderer.render(wireframeScene, camera);
   }
-  stats.end();
+  // stats.end();
 };
