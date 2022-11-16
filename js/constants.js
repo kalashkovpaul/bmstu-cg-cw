@@ -1,5 +1,5 @@
 
-export var obj_params= {
+export let obj_params= {
     'cube': {
         color: (1, 1, 1),
         width: 2,
@@ -40,6 +40,8 @@ export var obj_params= {
 export const maxDatas = 12;
 export const maxTypes = 4;
 export const maxOperations = 3;
+
+export const maxObjects = 4;
 
 export const typesValues = {
     cube: 1,

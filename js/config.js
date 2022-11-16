@@ -2,7 +2,7 @@ import { data, operations, types } from "../index.js";
 import { maxDatas, maxOperations, maxTypes } from "./constants.js";
 import * as THREE from '/build/three.module.js'
 
-export var config = {
+export let config = {
     wireframe: false,
     colored: false,
     internalEdge: true,
@@ -71,7 +71,8 @@ export var config = {
         RotationY: 0,
         RotationZ: 0,
       },
-    }
+    },
+    delete: false,
   };
 
 export function getRaymarchingMaterial(camera, fshader, vshader) {
@@ -174,7 +175,7 @@ export function updateRaymarchingMaterial(raymarchingMaterial, config, objects) 
   raymarchingMaterial.uniforms.types.value = types;
   raymarchingMaterial.uniforms.operations.value = operations;
 
-  // var cube = objects[0];
+  // let cube = objects[0];
   // raymarchingMaterial.uniforms.cubePosition.value = cube.object.position;
   // raymarchingMaterial.uniforms.cubeRotation.value = cube.object.rotation;
   // raymarchingMaterial.uniforms.cubeScale.value = cube.object.scale.x;

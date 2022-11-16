@@ -21,3 +21,33 @@ a { color: skyblue }
 canvas {
   border: 1px solid gray;
 }
+
+.add-object-btn {
+  position: absolute;
+  cursor: pointer;
+  text-align: center;
+  width: 415px;
+  height: 20px;
+  bottom: 0;
+  right: 0;
+  background-color: black;
+  color: #eee;
+  font: 11px Lucida Grande,sans-serif;
+  line-height: 20px;
+  text-shadow: 0 -1px 0 #111;
+}
+
+.delete-btn {
+  position: absolute;
+  cursor: pointer;
+  text-align: center;
+  width: 415px;
+  height: 20px;
+  bottom: 20px;
+  right: 0;
+  background-color: black;
+  color: #eee;
+  font: 11px Lucida Grande,sans-serif;
+  line-height: 20px;
+  text-shadow: 0 -1px 0 #111;
+}

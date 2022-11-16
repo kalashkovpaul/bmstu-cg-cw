@@ -7,12 +7,14 @@ import { operationsValues, typesValues } from './constants.js';
 
 
 
-let renderer, wireframeScene, controls;
+export let renderer, wireframeScene, controls;
 let raymarchingMaterial, raymarchingScreen;
 let raymarchingScene;
 let camera;
+export let material;
+let color;
 
-// var stats = new Stats();
+// let stats = new Stats();
 // stats.showPanel(0); // 0: fps, 1: ms, 2: mb, 3+: custom
 // document.body.appendChild( stats.dom );
 
@@ -32,38 +34,38 @@ export function initRenderer(fshader, vshader) {
   initRaymarching(fshader, vshader);
 
   return objects;
-
 }
+
 function initObjects() {
   wireframeScene = new THREE.Scene();
 
-  var color = new THREE.Color(1, 1, 1);
+  color = new THREE.Color(1, 1, 1);
   color.alpha = 0.5;
-  var material = new THREE.MeshBasicMaterial({color: color, wireframe:true, transparent:true, opacity:0.2});
+  material = new THREE.MeshBasicMaterial({color: color, wireframe:true, transparent:true, opacity:0.2});
 
-  let cube = new Cube(material);
+  let cube = new Cube(material, "cube");
   types[0] = new Number(typesValues.cube);
   wireframeScene.add(cube.get(obj_params.cube));
   objects.push(cube);
 
-  let cylinder = new Cylinder(material);
-  types[1] = new Number(typesValues.cylinder);
-  wireframeScene.add(cylinder.get(obj_params.cylinder));
-  objects.push(cylinder);
+  // let cylinder = new Cylinder(material);
+  // types[1] = new Number(typesValues.cylinder);
+  // wireframeScene.add(cylinder.get(obj_params.cylinder));
+  // objects.push(cylinder);
 
-  let sphere = new Sphere(material);
-  types[2] = new Number(typesValues.sphere);
-  wireframeScene.add(sphere.get(obj_params.sphere));
-  objects.push(sphere);
+  // let sphere = new Sphere(material);
+  // types[2] = new Number(typesValues.sphere);
+  // wireframeScene.add(sphere.get(obj_params.sphere));
+  // objects.push(sphere);
 
-  let torus = new Torus(material);
-  types[3] = new Number(typesValues.torus);
-  wireframeScene.add(torus.get(obj_params.torus));
-  objects.push(torus);
+  // let torus = new Torus(material);
+  // types[3] = new Number(typesValues.torus);
+  // wireframeScene.add(torus.get(obj_params.torus));
+  // objects.push(torus);
 
-  operations[0] = new Number(operationsValues.union);
-  operations[1] = new Number(operationsValues.union);
-  operations[2] = new Number(operationsValues.union);
+  // operations[0] = new Number(operationsValues.union);
+  // operations[1] = new Number(operationsValues.union);
+  // operations[2] = new Number(operationsValues.union);
 }
 
 function initRaymarching(fshader, vshader) {
@@ -76,7 +78,6 @@ function initRaymarching(fshader, vshader) {
 
   raymarchingScene = new THREE.Scene();
   raymarchingScene.add(raymarchingScreen);
-  // raymarchingMaterial = updateRaymarchingMaterial(raymarchingMaterial, config, objects);
 }
 
 export function render() {

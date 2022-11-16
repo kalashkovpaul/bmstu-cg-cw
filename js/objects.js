@@ -1,8 +1,9 @@
 import * as THREE from '/build/three.module.js'
 
 export class Cube {
-    constructor(material) {
+    constructor(material, name) {
         this.material = material;
+        this.name = name;
     }
 
     get(params) {
@@ -17,7 +18,7 @@ export class Cube {
             return this.object;
     }
     configure(globConfig) {
-        var config = globConfig.cube;
+        let config = globConfig[this.name];
         this.object.position.set(config.pos.PositionX, config.pos.PositionY, config.pos.PositionZ);
         this.object.rotation.set(config.rotation.RotationX, config.rotation.RotationY, config.rotation.RotationZ);
         this.object.scale.set(config.scale, config.scale, config.scale);
@@ -26,8 +27,9 @@ export class Cube {
 }
 
 export class Sphere {
-    constructor(material) {
+    constructor(material, name) {
         this.material = material;
+        this.name = name;
     }
 
     get(params) {
@@ -43,8 +45,9 @@ export class Sphere {
             }
             return this.object;
     }
+
     configure(globConfig) {
-        var config = globConfig.sphere;
+        let config = globConfig[this.name];
         this.object.position.set(config.pos.PositionX, config.pos.PositionY, config.pos.PositionZ);
         this.object.scale.set(config.scale, config.scale, config.scale);
         this.object.rotation.set(config.rotation.RotationX, config.rotation.RotationY, config.rotation.RotationZ);
@@ -55,8 +58,9 @@ export class Sphere {
 
 
 export class Cylinder {
-    constructor(material) {
+    constructor(material, name) {
         this.material = material;
+        this.name = name;
     }
 
     get(params) {
@@ -73,8 +77,9 @@ export class Cylinder {
 
         return this.object;
     }
+
     configure(globConfig) {
-        var config = globConfig.cylinder;
+        let config = globConfig[this.name];
         this.object.position.set(config.pos.PositionX, config.pos.PositionY, config.pos.PositionZ);
         this.object.rotation.set(config.rotation.RotationX, config.rotation.RotationY, config.rotation.RotationZ);
         this.object.scale.set(config.scale, config.scale, config.scale);
@@ -83,8 +88,9 @@ export class Cylinder {
 }
 
 export class Torus {
-    constructor(material) {
+    constructor(material, name) {
         this.material = material;
+        this.name = name;
     }
 
     get(params) {
@@ -103,7 +109,7 @@ export class Torus {
     }
 
     configure(globConfig) {
-        var config = globConfig.torus;
+        let config = globConfig[this.name];
         this.object.position.set(config.pos.PositionX, config.pos.PositionY, config.pos.PositionZ);
         this.object.rotation.set(config.rotation.RotationX, config.rotation.RotationY, config.rotation.RotationZ);
         this.object.scale.set(config.scale, config.scale, config.scale);

@@ -103,7 +103,7 @@ float coneDist(vec3 p, vec2 c) {
 }
 
 float torusDist(vec3 p, vec2 t) {
-  vec2 q = vec2(length(p.xz)-t.x,p.y);
+  vec2 q = vec2(length(p.xy)-t.x,p.z);
   return length(q)-t.y;
 }
 
@@ -289,11 +289,11 @@ vec3 getRayColor(vec3 rayOrigin, vec3 rayDirection, out vec3 rayPosition, out ve
   }
 
   if (internalEdge && isEdge(rayPosition)) {
-    return vec3(0.0);
+    return vec3(0.3);
   }
 
   if (isOutline(rayPosition, rayDirection)) {
-    return vec3(0.0);
+    return vec3(0.3);
   }
 
   if (colored) {
