@@ -14,9 +14,9 @@ let camera;
 export let material;
 let color;
 
-// let stats = new Stats();
-// stats.showPanel(0); // 0: fps, 1: ms, 2: mb, 3+: custom
-// document.body.appendChild( stats.dom );
+let stats = new Stats();
+stats.showPanel(0); // 0: fps, 1: ms, 2: mb, 3+: custom
+document.body.appendChild( stats.dom );
 
 export function initRenderer(fshader, vshader) {
   renderer = new THREE.WebGLRenderer({preserveDrawingBuffer: true});
@@ -81,7 +81,7 @@ function initRaymarching(fshader, vshader) {
 }
 
 export function render() {
-  // stats.begin();
+  stats.begin();
   requestAnimationFrame( () => {render(objects)} );
 
   controls.update();
@@ -97,5 +97,5 @@ export function render() {
   if (config.wireframe) {
     renderer.render(wireframeScene, camera);
   }
-  // stats.end();
+  stats.end();
 };
