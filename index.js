@@ -3,6 +3,11 @@ import {initRenderer, render} from "/js/init-raymarching.js";
 import {createAddButton} from "/js/utils.js";
 import * as THREE from '/build/three.module.js';
 
+window.resizeTo(700, 700);
+window.moveTo(600, 200);
+window.resizeTo = null;
+window.scroll = null;
+
 var sceneObjects = [];
 export var objects = [];
 export var wireObjects = [];
