@@ -31,6 +31,7 @@ let torusAmount = 0;
 function addObject() {
     if (objects.length == maxObjects) {
         alert("Создано максимальное число объектов!");
+        return
     }
     let type = prompt("Введите номер создаваемого объекта: \
         \n 1 - Куб \n 2 - Цилиндр \n 3 - Сфера \n 4 - Тор", "2");
